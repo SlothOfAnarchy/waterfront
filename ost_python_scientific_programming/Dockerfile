@@ -13,20 +13,29 @@ ENV WATERFRONT_UID=9999
 #RUN echo "$WATERFRONT_USER ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
 
 # Use this one instead,
-RUN useradd --create-home --shell /bin/bash --uid $WATERFRONT_UID $WATERFRONT_USER --groups users
-
+RUN useradd --create-home --shell /usr/bin/zsh --uid $WATERFRONT_UID $WATERFRONT_USER --groups users
 
 ###### Packages
 # repository for graph-tool
 RUN zypper --non-interactive --gpg-auto-import-keys addrepo \
     --repo https://download.opensuse.org/repositories/home:/bsijoh/openSUSE_Tumbleweed/home:bsijoh.repo
-    
-RUN zypper --non-interactive --gpg-auto-import-keys refresh 
+
+RUN zypper --non-interactive --gpg-auto-import-keys refresh
 
 RUN zypper --non-interactive install \
     vim \
     bash \
     git \
+    which \
+    tar \
+    libncurses6 \
+    nano \
+    zsh \
+    htop \
+    man \
+    openssh \
+    tmux \
+    less \
     glibc-locale \
     sshfs \
     python3 \
@@ -46,16 +55,15 @@ RUN zypper --non-interactive install \
     python3-jupyter_ipyparallel
 
 # smt-solver
-RUN zypper --non-interactive install \    
+RUN zypper --non-interactive install \
     z3 \
     z3-devel \
     python3-z3
 
-
-# install graph_tool from openSUSE Build Service    
+# install graph_tool from openSUSE Build Service
 RUN zypper --non-interactive install \
     python3-graph_tool
-    
+
 # non-packaged python tools
 RUN pip3 install networkx \
     pysmt
